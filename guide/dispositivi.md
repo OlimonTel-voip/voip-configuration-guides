@@ -67,6 +67,18 @@ In **VoIP Server Settings**, crea o modifica un profilo di tipo **SIP**. Imposta
 
 **Prova.** Per TA400 (quattro porte) e TA800 (otto porte), verifica nello stato del gateway la registrazione di ciascuna porta configurata. Chiama i numeri uno per volta, confronta squillo e porta, poi fai una chiamata in uscita da ciascuna porta usata. [Guida OlimonTel per gateway Yeastar](https://olimontel.it/guide-configurazioni/configurazione-voip-olimontel-yeastar-gateway-fxs/) · [Documentazione Yeastar per TA400/TA800](https://help.yeastar.com/en/voip-gateways/)
 
+### Keenetic Linear KN-3110
+
+Linear aggiunge due porte FXS a un router Keenetic compatibile con USB e con il componente **Keenetic Phone Station**. I menu indicati provengono dai manuali Titan e Titan SE. [Scheda Linear KN-3110](https://keenetic.com/it/keenetic-linear) · [Configurazione di Phone Station con Linear](https://support.keenetic.com/titan/kn-1812/it/19332-setting-up-phone-station-with-a-linear-adapter.html)
+
+1. Nelle opzioni dei componenti di KeeneticOS installa **Keenetic Phone Station**. Collega Linear via USB al router e il telefono analogico alla presa FXS che vuoi usare.
+2. Apri **Telephony → Telephone lines**, aggiungi una linea e attiva **Enable SIP registration**. Per la configurazione manuale seleziona **Other** in **Provider**.
+3. Inserisci `<SIP_DOMAIN>` in **SIP registrar** e in **SIP domain** per il profilo che usa il dominio assegnato in entrambi i campi. Se il registrar usa una porta diversa da quella predefinita, scrivi `<SIP_DOMAIN>:<SIP_PORT>` nel campo **SIP registrar**. Compila **SIP proxy** con i valori previsti dal profilo.
+4. Usa `<SIP_LOGIN>` in **SIP User ID**, `<SIP_AUTH_ID>` in **SIP Auth ID** e `<SIP_PASSWORD>` in **Password**. Seleziona il **SIP transport** assegnato. Tra i codec di Linear abilita **G.711a** (A-law/PCMA), previsto da Numero VoIP. Per i toni DTMF seleziona **RFC2833**.
+5. In **Phone Station** apri le impostazioni della porta FXS collegata e abilita **Incoming** e **Outgoing** per la nuova linea. [Parametri Numero VoIP OlimonTel](https://olimontel.it/guide-configurazioni/informazioni-tecniche-voip/) · [Campi della linea SIP](https://support.keenetic.com/titan-se/kn-4210/it/19336-setting-up-a-telephone-line.html) · [Impostazioni della porta FXS](https://support.keenetic.com/titan-se/kn-4210/it/19334-setting-up-an-fxs-port.html)
+
+**Prova.** Controlla **Registered** in **Telephone lines**. Chiama il Numero VoIP da un altro telefono e verifica lo squillo sulla porta assegnata. Rispondi e controlla l'audio nei due sensi, poi richiama da quella porta. Se hai configurato entrambe le porte, ripeti la prova per ciascuna associazione.
+
 ## FRITZ!Box con funzioni di telefonia
 
 1. Apri **Telefonia → Propri numeri → Nuovo numero** e scegli **Altro provider**. Nel profilo illustrato dalla guida inserisci `<SIP_LOGIN>` in **Numero per la registrazione**, **Numero interno** e **Nome utente**.
