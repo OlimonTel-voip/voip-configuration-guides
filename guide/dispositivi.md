@@ -26,6 +26,22 @@ Nella configurazione web apri **VoIP → SIP Settings → Line N** per la linea 
 
 ## Adattatori ATA e gateway FXS
 
+### Cisco SPA112 e SPA122
+
+Entrambi hanno due porte per telefoni analogici. Cisco indica il 31 maggio 2025 come ultima data di supporto. [Avviso Cisco di fine supporto](https://www.cisco.com/c/en/us/products/collateral/unified-communications/small-business-voice-gateways-ata/eos-eol-notice-c51-743206.html)
+
+1. In **Voice → Line 1** o **Line 2** seleziona la linea della presa **PHONE 1** o **PHONE 2** e imposta **Line Enable** su **Yes**.
+2. In **Proxy and Registration**, inserisci `<SIP_DOMAIN>` in **Proxy**, indica la porta remota nell'indirizzo del proxy se richiesta e imposta **Register** su **Yes**. Attiva **Use Outbound Proxy** e compila **Outbound Proxy** se previsto dal profilo. In **SIP Settings**, scegli il **SIP Transport** assegnato. La voce **SIP Port** regola la porta locale della linea.
+3. In **Subscriber Information**, inserisci `<SIP_LOGIN>` in **User ID** e `<SIP_PASSWORD>` in **Password**. Se il profilo prevede un identificativo di autenticazione separato, imposta **Use Auth ID** su **Yes** e usa `<SIP_AUTH_ID>` in **Auth ID**. Salva con **Submit**. [Guida OlimonTel per SPA112/SPA122](https://olimontel.it/guide-configurazioni/configurazione-ata-cisco-voip/) · [Manuale Cisco per le impostazioni voce](https://www.cisco.com/c/en/us/td/docs/voice_ip_comm/csbpvga/spa100-200/admin_guide_SPA100/spa100_ag/voice.html)
+
+**Prova su SPA112 e SPA122.** In **Voice → Information** verifica **Registration State** per la linea usata. Chiama il Numero VoIP da un altro telefono e verifica lo squillo sulla porta associata. Rispondi, controlla l'audio nei due sensi e richiama dalla stessa porta. Se usi due account, ripeti per ognuno.
+
+### Grandstream HT801 e HT802 di prima generazione
+
+Apri direttamente la scheda **FXS PORT** dell'HT801 o quella della porta desiderata sull'HT802. Imposta **Account Active** e **SIP Registration** su **Yes**. Usa il dominio e la porta remota assegnati in **Primary SIP Server**, `<SIP_LOGIN>` in **SIP User ID**, `<SIP_AUTH_ID>` in **Authenticate ID** e `<SIP_PASSWORD>` in **Authenticate Password**. Imposta **SIP Transport** secondo il profilo. Aggiungi **Outbound Proxy** se previsto, poi applica le modifiche.
+
+**Prova.** Apri **Status → Port Status** e controlla **Registration**. Su HT801 verifica ingresso e uscita dalla porta unica. Su HT802, ripeti su ciascuna porta configurata e verifica che il numero chiamato faccia squillare il telefono assegnato. [Guida OlimonTel per HT80x di prima generazione](https://olimontel.it/guide-configurazioni/configurazione-ata-grandstream-voip/) · [Manuale Grandstream HT80x](https://documentation.grandstream.com/knowledge-base/ht80x-administration-guide/)
+
 ### Grandstream HT801 V2 e HT802 V2
 
 1. Collega l'ATA alla rete via Ethernet e il telefono analogico alla porta **PHONE/FXS**. L'HT801 V2 ha una porta FXS. Sull'HT802 V2 prendi nota della porta che stai configurando e controlla di usare quella per le chiamate di prova.
@@ -55,6 +71,14 @@ Nella configurazione web apri **VoIP → SIP Settings → Line N** per la linea 
 
 [Manuale Grandstream HT81x V2](https://documentation.grandstream.com/knowledge-base/ht81x-v2-administration-guide/) · [Parametri Numero VoIP OlimonTel](https://olimontel.it/guide-configurazioni/informazioni-tecniche-voip/)
 
+### Linksys PAP2T e SPA2102
+
+1. Apri **Line 1** o **Line 2** nel pannello voce dell'ATA, secondo la presa a cui è collegato il telefono. Se compare **Line Enable**, attiva la linea.
+2. In **Proxy and Registration** compila **Proxy** con il dominio SIP assegnato, includendo la porta remota se richiesta dal profilo. Imposta **Register** su **Yes**. Configura **Outbound Proxy** quando è previsto.
+3. In **Subscriber Information** usa `<SIP_LOGIN>` in **User ID** e `<SIP_PASSWORD>` in **Password**. Per un profilo con identificativo di autenticazione separato attiva **Use Auth ID** e inserisci `<SIP_AUTH_ID>` in **Auth ID**. La guida OlimonTel usa la login anche in **Display Name**. Salva le modifiche.
+
+**Prova su PAP2T e SPA2102.** Nella pagina **Info** controlla **Registration State** della linea scelta. Chiama il numero da un telefono esterno, verifica squillo e audio nei due sensi, poi prova una chiamata in uscita dalla stessa porta. Se la seconda porta è configurata, ripeti la prova per la sua numerazione. [Guida OlimonTel per Linksys SPA](https://olimontel.it/guide-configurazioni/configurazione-cisco-linksys-spa-voip/) · [Manuale Cisco per PAP2T e SPA2102](https://community.cisco.com/legacyfs/online/legacy/7/6/4/75467-ATA_AG_v3_NC-WEB.pdf)
+
 ### Yeastar TA100 e TA200
 
 Apri **Gateway → Port Settings → FXS Port** e modifica la porta. In **Basic**, usa `<SIP_LOGIN>` in **User Name**, `<SIP_AUTH_ID>` in **Authentication Name** e `<SIP_PASSWORD>` in **Password**. Inserisci `<SIP_DOMAIN>` in **Hostname/IP** e **Domain**, con `<SIP_PORT>` nel campo della porta accanto al server. Seleziona **Transport**. Se il profilo richiede un proxy, compila **Outbound Proxy Server**. Per **From User** usa la login se il profilo corrisponde a quello illustrato da OlimonTel. Imposta **DID Number** secondo il formato associato alla porta.
@@ -79,6 +103,19 @@ Linear aggiunge due porte FXS a un router Keenetic compatibile con USB e con il 
 
 **Prova.** Controlla **Registered** in **Telephone lines**. Chiama il Numero VoIP da un altro telefono e verifica lo squillo sulla porta assegnata. Rispondi e controlla l'audio nei due sensi, poi richiama da quella porta. Se hai configurato entrambe le porte, ripeti la prova per ciascuna associazione.
 
+## Gateway SIP con interfaccia ISDN
+
+### Mediatrix serie 4400
+
+La guida OlimonTel documenta un gateway della serie 4400 collegato via **ISDN BRI** a un centralino. Usa i passaggi di registrazione per il profilo SIP con **REGISTER**. Per un profilo con autenticazione IP, usa i parametri e le rotte forniti per quel trunk.
+
+1. In **SIP → Gateway** crea un gateway di tipo **Trunk** e associa le interfacce di segnalazione e audio previste dalla rete del cliente.
+2. In **SIP → Servers** seleziona il gateway appena creato e compila **Registrar Host** con `<SIP_DOMAIN>:<SIP_PORT>`. Imposta **Proxy Host** e **Outbound Proxy Host** secondo il profilo. Il profilo con registrazione illustrato da OlimonTel usa l'indirizzo del registrar anche per i due campi proxy.
+3. In **SIP → Registration**, imposta **Unit Registration → User Name** con `<SIP_LOGIN>` e abilita la registrazione per quel gateway. In **SIP → Authentication** seleziona **Gateway** come **Criteria**, associa lo stesso gateway e compila **User Name** con `<SIP_AUTH_ID>` e **Password** con `<SIP_PASSWORD>`. Compila **Realm** se previsto dal profilo. Applica e controlla lo stato **Registered**.
+4. In **Call Router → Route Config** associa in ingresso il numero nel formato ricevuto alla porta BRI, o al gruppo di porte, del centralino. Configura anche la rotta in uscita dalla BRI verso il gateway SIP autorizzato. [Guida OlimonTel per Mediatrix](https://olimontel.it/guide-configurazioni/configurazione-mediatrix-voip/) · [Autenticazione SIP M5 Technologies](https://documentation.m5technologies.com/sip-authentication) · [Call Router M5 Technologies](https://documentation.m5technologies.com/call-router)
+
+**Prova.** Chiama il numero da una linea esterna. Verifica che sul centralino risponda la destinazione collegata alla BRI prevista e che l'audio funzioni nei due sensi. Effettua poi una chiamata da un interno del centralino attraverso il gateway e controlla il numero chiamante mostrato e la chiusura della chiamata.
+
 ## FRITZ!Box con funzioni di telefonia
 
 1. Apri **Telefonia → Propri numeri → Nuovo numero** e scegli **Altro provider**. Nel profilo illustrato dalla guida inserisci `<SIP_LOGIN>` in **Numero per la registrazione**, **Numero interno** e **Nome utente**.
@@ -92,6 +129,24 @@ Linear aggiunge due porte FXS a un router Keenetic compatibile con USB e con il 
 | **FRITZ!Box 7590 AX** | Se usi più telefoni, controlla a quale presa FON o portatile DECT è assegnata ciascuna numerazione. | Chiama ogni numero e verifica che squilli solo il dispositivo assegnato. Prova l'uscita da ogni apparecchio configurato. [Scheda 7590 AX](https://fritz.com/it-it/products/fritz-box-7590-ax-20002999) |
 | **FRITZ!Box 5590 Fiber** | Per un telefono analogico seleziona la presa effettivamente utilizzata nel menu di configurazione del dispositivo. | Dopo che il numero risulta attivo, verifica squillo in ingresso e audio nei due sensi tramite quella presa. Prova poi l'uscita dallo stesso apparecchio. [Telefono analogico su 5590 Fiber](https://fritz.com/it-it/apps/knowledge-base/FRITZ-Box-5590-Fiber/3285_Configurare-un-telefono-analogico-nel-FRITZ-Box) |
 | **FRITZ!Box 4060** | Configura il telefono DECT o IP come dispositivo di telefonia, poi assegna la linea in ingresso e uscita. | Chiama da e verso il terminale DECT o IP e verifica la linea utilizzata. Per una chiamata dall'app, vedi **FRITZ!App Fon** nella [guida alle app](softphone.md). [Scheda 4060](https://fritz.com/it-it/products/fritz-box-4060-20002952) |
+
+## Altri router con porta per telefono
+
+### Huawei B525s
+
+La procedura si applica al firmware che espone **VoIP → Account SIP** e **Server SIP**. In **Account SIP** aggiungi un account e usa `<SIP_LOGIN>` nei campi **Account SIP** e **Nome utente**. Inserisci `<SIP_PASSWORD>` in **Password**. In **VoIP → Server SIP** compila **Proxy**, **Registrazione** e **Dominio** con il server assegnato per il profilo illustrato. Per **Proxy** e **Registrazione**, imposta le porte remote assegnate. Per i toni DTMF, la guida indica **RFC 2833**.
+
+**Prova.** Collega il telefono alla porta telefonica del router. Sulla connessione LTE che userai, chiama il Numero VoIP da un secondo telefono. Verifica squillo e audio bidirezionale e richiama dalla stessa presa. [Guida OlimonTel per Huawei B525s](https://olimontel.it/guide-configurazioni/configurazione-router-huawei-4g-voip/)
+
+### TP-Link Archer VR1210v e router con porta FXS
+
+La guida OlimonTel copre i modem router TP-Link con **Telefonia** o **VoIP** nel pannello. Archer VR1210v è un esempio con funzione VoIP documentata da TP-Link.
+
+1. In **Avanzate → Telefonia → Numero telefonico** aggiungi un account SIP. Sui firmware con la voce **VoIP**, apri la pagina **Telephone Numbers**.
+2. Compila **Numero telefono** con `<SIP_LOGIN>`, **Autenticazione ID** con `<SIP_AUTH_ID>` e **Password** con `<SIP_PASSWORD>`. Nel profilo OlimonTel illustrato, **Registrar Address**, **SIP Proxy** e **Outbound Proxy** usano il dominio assegnato. Imposta **Proxy Port** con la porta remota prevista dal profilo.
+3. In **Phone Devices** associa il numero alla presa telefonica per le chiamate entranti e uscenti.
+
+**Prova.** Controlla **Registered** in **Telephone Numbers**. Chiama il numero da un altro telefono, rispondi dalla presa assegnata e ascolta l'audio nei due sensi. Prova poi l'uscita dalla stessa presa. [Guida OlimonTel per router TP-Link](https://olimontel.it/guide-configurazioni/guida-configurazione-voip-router-tp-link/) · [Configurazione VoIP TP-Link](https://www.tp-link.com/it/support/faq/2020/) · [Scheda VR1210v](https://service-provider.tp-link.com/it/vdsl/vr1210v/)
 
 ## Basi cordless Gigaset IP
 
