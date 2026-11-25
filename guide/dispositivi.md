@@ -2,11 +2,35 @@
 
 Tieni a disposizione i [parametri assegnati](servizi-e-parametri.md). Quando configuri un ATA o un router con telefonia, verifica la porta analogica FXS a cui è collegato il telefono.
 
-## Grandstream HT801 V2 e HT802 V2
+## Telefoni IP
+
+### Yealink T33G, T43U, T46U, T54W e T57W
+
+1. Nell'interfaccia del telefono apri **Account → Register**, seleziona l'account e attiva **Line Active**.
+2. Usa `<SIP_LOGIN>` in **User Name**, `<SIP_AUTH_ID>` in **Register Name**, `<SIP_PASSWORD>` in **Password** e `<SIP_DOMAIN>` in **SIP Server**. Imposta porta remota e trasporto del profilo. Nell'esempio OlimonTel il nome di autenticazione coincide con la login.
+3. In **Codec** scegli quelli comuni al modello e alla linea. La guida OlimonTel dà precedenza a G.729A e include G.711 A-law. Salva e controlla **Registered**.
+
+**Prova su ciascun modello.** Seleziona il tasto della linea configurata e chiama da quella linea. Richiama dall'altro telefono e verifica che squilli lo stesso account. Se ci sono più account, controlla l'etichetta della linea usata. Ascolta l'audio nei due sensi. Se regoli **Server Expires**, controlla la scadenza effettiva e ripeti la prova in ingresso dopo inattività. [Guida OlimonTel per Yealink](https://olimontel.it/guide-configurazioni/configurazione-telefoni-yealink-voip/) · [Registrazione account e modelli Yealink](https://support.yealink.com/docs/sip-t53/account-registration/cb7e0331cba0407a975f6e76e5309930)
+
+### Grandstream GRP2612, GRP2613 e GRP2614
+
+In **Accounts** seleziona l'account e apri **General Settings**. Attiva **Account Active**. Inserisci `<SIP_DOMAIN>` in **SIP Server**, con la porta remota esplicita se richiesta. Usa `<SIP_LOGIN>` in **SIP User ID**, `<SIP_AUTH_ID>` in **SIP Authentication ID** e `<SIP_PASSWORD>` in **SIP Authentication Password**. In **SIP Settings** mantieni attiva **SIP Registration** e seleziona **SIP Transport** secondo il profilo. Compila **Outbound Proxy** solo se previsto.
+
+**Prova su ciascun modello.** Controlla in **Status → Account Status** lo stato della registrazione. Seleziona la linea corrispondente sul telefono, chiama un secondo telefono e fatti richiamare. Verifica che lo squillo arrivi sull'account configurato e che l'audio funzioni nelle due direzioni. [Manuale Grandstream GRP261x](https://documentation.grandstream.com/knowledge-base/grp261x-grp262x-grp263x-series-administration-guide/) · [Parametri Numero VoIP OlimonTel](https://olimontel.it/guide-configurazioni/informazioni-tecniche-voip/)
+
+### Panasonic KX-UT113, KX-UT123, KX-UT133 e KX-UT136
+
+Nella configurazione web apri **VoIP → SIP Settings → Line N** per la linea in uso. In **SIP URI** usa `<SIP_LOGIN>@<SIP_DOMAIN>` come illustrato da OlimonTel, oppure la forma completa `sip:<SIP_LOGIN>@<SIP_DOMAIN>` se richiesta dal firmware. Usa `<SIP_AUTH_ID>` in **Authentication ID** e `<SIP_PASSWORD>` in **Authentication Password**. Imposta **Registrar Server Address** e **Service Domain** con `<SIP_DOMAIN>` e **Registrar Server Port** con `<SIP_PORT>`.
+
+**Prova su ciascun modello.** Controlla la registrazione della linea configurata e usala per una chiamata in uscita. Da un altro numero richiama la linea e verifica squillo e audio nei due sensi. [Guida OlimonTel per Panasonic KX-UT](https://olimontel.it/guide-configurazioni/configurazione-panasonic-telefoni-voip/) · [Manuali Panasonic per le versioni europee KX-UT1xx](https://docs.connect.panasonic.com/pcc/support/sipphone/download/UT1/others.html)
+
+## Adattatori ATA e gateway FXS
+
+### Grandstream HT801 V2 e HT802 V2
 
 1. Collega l'ATA alla rete via Ethernet e il telefono analogico alla porta **PHONE/FXS**. L'HT801 V2 ha una porta FXS. Sull'HT802 V2 prendi nota della porta che stai configurando e controlla di usare quella per le chiamate di prova.
 2. In **Port Settings → FXS Port** seleziona la porta e apri **SIP Settings**. Imposta **Account Active** su **Yes**, compila i campi della tabella e lascia attiva la registrazione. Aggiungi un proxy o un server di riserva quando il profilo lo prevede.
-3. Applica le modifiche. In **Status → Port Status** verifica **Registration** per quella porta. Se la porta risulta registrata ma il telefono resta muto, controlla il collegamento analogico e ripeti la prova sulla stessa porta.
+3. Applica le modifiche. In **Status → Port Status** verifica **Registration** per quella porta.
 
 | Campo Grandstream | Valore |
 | --- | --- |
@@ -16,23 +40,48 @@ Tieni a disposizione i [parametri assegnati](servizi-e-parametri.md). Quando con
 | **Authenticate Password** | `<SIP_PASSWORD>` |
 | **SIP Transport** | Trasporto previsto dal profilo. |
 
-I menu seguono la revisione V2. [Manuale HT80x V2](https://documentation.grandstream.com/knowledge-base/ht80x-v2-administration-guide/) · [FAQ ufficiale HT8xx V2](https://documentation.grandstream.com/knowledge-base/ht8xx-v2-faq/)
+**Prova.** Su HT801 V2 effettua e ricevi una chiamata dalla porta unica. Su HT802 V2 ripeti su ogni porta configurata e verifica che squilli quella associata al numero chiamato. Se compare **Registered** e il telefono resta muto, controlla il collegamento analogico. I menu seguono la revisione V2. [Manuale HT80x V2](https://documentation.grandstream.com/knowledge-base/ht80x-v2-administration-guide/) · [FAQ ufficiale HT8xx V2](https://documentation.grandstream.com/knowledge-base/ht8xx-v2-faq/)
 
-## Yealink
+### Grandstream HT812 V2, HT814 V2 e HT818 V2
 
-1. Nell'interfaccia del telefono apri **Account → Register**, seleziona l'account da configurare e abilita la linea con **Line Active**. Il percorso può variare con modello e firmware.
-2. Compila **Register Name** e **User Name** con `<SIP_LOGIN>`, **Password** con `<SIP_PASSWORD>` e **SIP Server** con `<SIP_DOMAIN>`. La guida OlimonTel usa la login anche in **Label** e **Display Name**. Imposta la porta e il trasporto del profilo.
-3. Nella sezione **Codec**, per il modello illustrato, la guida dà precedenza a G.729A e indica G.711 A-law come opzione successiva. Usa quelli disponibili sul modello e previsti dal profilo.
-4. Salva e verifica **Registered**. Se regoli **Server Expires**, controlla il valore effettivamente accordato e ripeti la prova in ingresso dopo inattività. [Guida OlimonTel per Yealink](https://olimontel.it/guide-configurazioni/configurazione-telefoni-yealink-voip/)
+1. Apri **Port Settings → Profile N → General Settings → Account Registration**. Imposta **Primary SIP Server** con `<SIP_DOMAIN>` e la porta remota se richiesta. Tieni attiva **SIP Registration**. Imposta **SIP Transport** secondo il profilo e aggiungi **Outbound Proxy** se previsto.
+2. In **Port Settings → FXS Port**, per ogni porta che usi, imposta **SIP User ID**, **Authenticate ID** e **Authenticate Password** rispettivamente con `<SIP_LOGIN>`, `<SIP_AUTH_ID>` e `<SIP_PASSWORD>`. Seleziona il **Profile ID** configurato, abilita la porta e salva.
+
+| Modello | Porte FXS | Prova dopo aver verificato **Status → Port Status → Registration** |
+| --- | --- | --- |
+| **HT812 V2** | 2 | Fai squillare il telefono sulla porta assegnata e richiama dalla stessa porta. Se usi entrambe, verifica ogni associazione. |
+| **HT814 V2** | 4 | Chiama ogni numero configurato e verifica che risponda il telefono sulla porta corrispondente. Prova anche l'uscita da quelle porte. |
+| **HT818 V2** | 8 | Confronta numero, profilo e porta in uso. Prova ingresso e uscita da ogni porta configurata, compresa l'ultima se usata. |
+
+[Manuale Grandstream HT81x V2](https://documentation.grandstream.com/knowledge-base/ht81x-v2-administration-guide/) · [Parametri Numero VoIP OlimonTel](https://olimontel.it/guide-configurazioni/informazioni-tecniche-voip/)
+
+### Yeastar TA100 e TA200
+
+Apri **Gateway → Port Settings → FXS Port** e modifica la porta. In **Basic**, usa `<SIP_LOGIN>` in **User Name**, `<SIP_AUTH_ID>` in **Authentication Name** e `<SIP_PASSWORD>` in **Password**. Inserisci `<SIP_DOMAIN>` in **Hostname/IP** e **Domain**, con `<SIP_PORT>` nel campo della porta accanto al server. Seleziona **Transport**. Se il profilo richiede un proxy, compila **Outbound Proxy Server**. Per **From User** usa la login se il profilo corrisponde a quello illustrato da OlimonTel. Imposta **DID Number** secondo il formato associato alla porta.
+
+**Prova.** Su TA100 chiama il numero da un'altra linea, rispondi sull'unica porta e richiama. Su TA200, se usi due numeri, verifica che ciascuno faccia squillare la porta assegnata e prova a chiamare da entrambe. [Guida OlimonTel per gateway Yeastar](https://olimontel.it/guide-configurazioni/configurazione-voip-olimontel-yeastar-gateway-fxs/) · [Manuale Yeastar TA100/TA200](https://help.yeastar.com/download/docs/ta100-ta200-user-manual-en.pdf)
+
+### Yeastar TA400 e TA800
+
+In **VoIP Server Settings**, crea o modifica un profilo di tipo **SIP**. Imposta **Hostname/IP**, **Port**, **Domain** e **Transport** con i valori della linea. Usa **Port Register** quando ciascuna porta ha un account assegnato. In **Gateway → Port List** modifica ciascuna porta in uso, seleziona il profilo **VoIP Server** e compila **User Name**, **Authentication Name** e **Password** con i dati SIP della porta.
+
+**Prova.** Per TA400 (quattro porte) e TA800 (otto porte), verifica nello stato del gateway la registrazione di ciascuna porta configurata. Chiama i numeri uno per volta, confronta squillo e porta, poi fai una chiamata in uscita da ciascuna porta usata. [Guida OlimonTel per gateway Yeastar](https://olimontel.it/guide-configurazioni/configurazione-voip-olimontel-yeastar-gateway-fxs/) · [Documentazione Yeastar per TA400/TA800](https://help.yeastar.com/en/voip-gateways/)
 
 ## FRITZ!Box con funzioni di telefonia
 
 1. Apri **Telefonia → Propri numeri → Nuovo numero** e scegli **Altro provider**. Nel profilo illustrato dalla guida inserisci `<SIP_LOGIN>` in **Numero per la registrazione**, **Numero interno** e **Nome utente**.
-2. Inserisci `<SIP_PASSWORD>` e imposta **Registrar** e **Server Proxy** come indicato per il tuo profilo. Se usi una porta esplicita e l'interfaccia lo prevede, inseriscila come `<SIP_DOMAIN>:<SIP_PORT>`. Nelle **Funzioni** la guida indica l'opzione di registrazione tramite la connessione Internet, dove presente.
-3. Dopo il salvataggio, controlla lo stato in **Propri numeri**. In **Dispositivi di telefonia** modifica il telefono collegato e assegna il numero per ingresso e uscita. Se il centralino o il servizio da chiamare usa un menu vocale, prova anche i toni DTMF.
+2. Inserisci `<SIP_PASSWORD>` in **Password** e `<SIP_DOMAIN>` in **Registrar**. Per **Server Proxy** usa il valore previsto dal profilo. Se il firmware richiede la porta nello stesso campo, usa la forma `<SIP_DOMAIN>:<SIP_PORT>` per il registrar. Nelle **Funzioni** la guida indica l'opzione di registrazione tramite la connessione Internet, dove presente.
+3. Dopo il salvataggio, controlla lo stato in **Propri numeri**. In **Dispositivi di telefonia** associa il numero per **Chiamate in uscita** e scegli i numeri a cui quel telefono deve rispondere. Se usi un menu vocale, prova anche i toni DTMF.
 4. Se il FRITZ!Box è dietro un altro router o su una rete CGNAT, verifica il comportamento del modello sul collegamento effettivo seguendo la [diagnosi NAT](nat-e-starlink.md). [Guida OlimonTel per FRITZ!Box](https://olimontel.it/guide-configurazioni/guida-configurazione-fritzbox-voip/)
 
-## Gigaset IP
+| Modello | Cosa configurare dopo il numero SIP | Prova |
+| --- | --- | --- |
+| **FRITZ!Box 7530 AX** | Associa la presa analogica o il portatile DECT nelle impostazioni del dispositivo. | Chiama il numero da un secondo telefono. Verifica che squilli l'apparecchio scelto e che da quello stesso apparecchio l'uscita mostri il numero previsto. [Scheda 7530 AX](https://fritz.com/it-it/products/fritz-box-7530-ax-20002944) |
+| **FRITZ!Box 7590 AX** | Se usi più telefoni, controlla a quale presa FON o portatile DECT è assegnata ciascuna numerazione. | Chiama ogni numero e verifica che squilli solo il dispositivo assegnato. Prova l'uscita da ogni apparecchio configurato. [Scheda 7590 AX](https://fritz.com/it-it/products/fritz-box-7590-ax-20002999) |
+| **FRITZ!Box 5590 Fiber** | Per un telefono analogico seleziona la presa effettivamente utilizzata nel menu di configurazione del dispositivo. | Dopo che il numero risulta attivo, verifica squillo in ingresso e audio nei due sensi tramite quella presa. Prova poi l'uscita dallo stesso apparecchio. [Telefono analogico su 5590 Fiber](https://fritz.com/it-it/apps/knowledge-base/FRITZ-Box-5590-Fiber/3285_Configurare-un-telefono-analogico-nel-FRITZ-Box) |
+| **FRITZ!Box 4060** | Configura il telefono DECT o IP come dispositivo di telefonia, poi assegna la linea in ingresso e uscita. | Chiama da e verso il terminale DECT o IP e verifica la linea utilizzata. Per una chiamata dall'app, vedi **FRITZ!App Fon** nella [guida alle app](softphone.md). [Scheda 4060](https://fritz.com/it-it/products/fritz-box-4060-20002952) |
+
+## Basi cordless Gigaset IP
 
 1. Nell'interfaccia della base apri **Configurazioni → Telefono → Connessioni** e modifica un account VoIP. Inserisci login e password nelle impostazioni dell'account.
 2. Apri **Mostra impostazioni avanzate** e usa il server assegnato per **Dominio**, **Indirizzo server proxy** e **Server di registrazione** secondo la guida. Nel profilo illustrato, la configurazione di partenza lascia disattivati **STUN** e il proxy in uscita.
@@ -41,3 +90,5 @@ I menu seguono la revisione V2. [Manuale HT80x V2](https://documentation.grandst
 ## Prova finale
 
 Da un altro telefono chiama il numero e verifica lo squillo sul terminale collegato. Rispondi e controlla entrambe le direzioni dell'audio. Ripeti con una chiamata in uscita. Se vedi **Registered** ma uno dei test fallisce, usa la [guida di diagnosi](nat-e-starlink.md) in base al sintomo.
+
+Per altri apparati consulta il [catalogo pubblico OlimonTel per Numero VoIP](https://olimontel.it/categorie-configurazioni/apparati-dispositivi-voip/).
